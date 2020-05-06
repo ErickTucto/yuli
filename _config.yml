@@ -2,8 +2,8 @@ title: Buenos días
 email: erick.tucto@outlook.com
 description: >-
   Este es un sitio web creado para dar mensajes de buenos días.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/yuli" # the subpath of your site, e.g. /blog
+url: "https://ericktucto.com/yuli" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: erick_tucto
 github_username: ErickTucto
 
