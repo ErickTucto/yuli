@@ -5,11 +5,14 @@ date: 2020-05-05 21:05 -0500
 ---
 
 <style>
+    :root {
+        --heart-color: rgb(225, 3, 3);
+    }
     .container {
         display: grid;
         justify-items: center;
         align-items: center;
-        height: 400px;
+        height: 200px;
     }
     .container * {
         box-sizing: border-box;
@@ -17,20 +20,18 @@ date: 2020-05-05 21:05 -0500
     .heart {
         height: 100px;
         width: 100px;
-        background-color: red;
+        background-color: var(--heart-color);
         transform: rotate(45deg);
         border-bottom-right-radius: 1em;
-        box-shadow: 10px 10px 40px;
+        box-shadow: 10px 10px 60px;
         animation: latir 1.2s linear infinite;
     }
     .heart::after {
         border-radius: 50% 50% 0 0;
-        background-color: red;
         top: -50px;
     }
     .heart::before {
         border-radius: 50% 0 0 50%;
-        background-color: red;
         left: -50px;
     }
     .heart::after, .heart::before {
@@ -38,6 +39,7 @@ date: 2020-05-05 21:05 -0500
         position: absolute;
         width: 100px;
         height: 100px;
+        background: var(--heart-color);
     }
     @keyframes latir {
         0% {
