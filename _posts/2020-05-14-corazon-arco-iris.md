@@ -4,11 +4,13 @@ title: Corazon Arco Iris
 date: 2020-05-14 06:00 -0500
 ---
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://unpkg.com/@taufik-nurrohman/color-picker@2.0.3/color-picker.js"></script>
+<script src="https://unpkg.com/@taufik-nurrohman/color-picker@2.0.3/color-picker.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/@taufik-nurrohman/color-picker@2.0.3/color-picker.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
     --size: 100px;
+    --square-root: 1.41421356237;
   }
 
   #app {
@@ -21,11 +23,12 @@ date: 2020-05-14 06:00 -0500
     display: grid;
     align-items: start;
     justify-items: center;
-    height: calc(var(--size) * 1.5 * 1.41421356237);
+    height: calc(var(--size) * 1.5 * var(--square-root));
   }
 
   #container * {
     box-sizing: border-box;
+    margin: 0;
   }
 
   .heart {
@@ -41,6 +44,31 @@ date: 2020-05-14 06:00 -0500
   .left {
     position: relative;
     overflow: hidden;
+    background: white;
+  }
+
+  #mensaje {
+    display: none;
+  }
+
+  .heart.active #mensaje {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    width: calc(var(--size) * .5 * var(--square-root));
+    /* height: calc(var(--size) * var(--square-root)); */
+    grid-row: 1 / 3;
+    grid-column: 1 / 3;
+    transform: rotate(-45deg);
+    justify-self: center;
+    align-self: center;
+    justify-items: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: white;
+  }
+
+  .heart.active div:not(:last-child) {
+    background: #ff0080;
   }
 
   .center {
@@ -55,7 +83,8 @@ date: 2020-05-14 06:00 -0500
   .right {
     width: calc(var(--size) / 2);
     height: var(--size);
-    grid-row: 2;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
     border-radius: var(--size) 0 0 var(--size);
     justify-self: end;
   }
@@ -64,7 +93,8 @@ date: 2020-05-14 06:00 -0500
     width: var(--size);
     height: calc(var(--size) / 2);
     border-radius: var(--size) var(--size) 0 0;
-    grid-column: 2;
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
     align-self: end;
   }
 
@@ -162,12 +192,20 @@ date: 2020-05-14 06:00 -0500
   <div id="container">
     <div class="heart"
          v-on:click="latir"
+         v-bind:class="{ active: alphaAllColors }"
          ref="heart">
       <rainbow-container v-if="colors.length > 0"
                          v-for="rainbow in rainbows"
                          v-bind:key="`rainbow-${rainbow.position}`"
                          v-bind:position="rainbow.position"
                          v-bind:colors="rainbow.colors"></rainbow-container>
+      <div id="mensaje">
+        <!-- Ayuda para acomodar mensaje, asi las palabras quedan dentro -->
+        <p></p>
+        <p>Erick</p>
+        <p>y</p>
+        <p>Yuleisi</p>
+      </div>
     </div>
   </div>
   <div id="inputs">
@@ -238,7 +276,8 @@ date: 2020-05-14 06:00 -0500
         }
       },
       latir(event) {
-        this.$refs.heart.classList.toggle('active')
+        if (!this.alphaAllColors)
+          this.$refs.heart.classList.toggle('active')
       }
     },
     computed: {
@@ -250,6 +289,21 @@ date: 2020-05-14 06:00 -0500
           { position: "right", colors: this.getColors(rightColor) },
           { position: "left", colors: this.getColors(centerAndLeftColor) }
         ]
+      },
+      alphaAllColors() {
+        return this.colors.map(c => CP.HEX(c.value)[3]).every(alpha => alpha < .3)
+      }
+    },
+    watch: {
+      alphaAllColors(value, oldValue) {
+        if (value) {
+          this.picker.pop()
+          for (color of this.colors) {
+            let colors = CP.HEX(color.value)
+            colors[3] = 0
+            color.value = CP.HEX(colors)
+          }
+        }
       }
     }
   })
