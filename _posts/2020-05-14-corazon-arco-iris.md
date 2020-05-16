@@ -6,7 +6,7 @@ date: 2020-05-14 06:00 -0500
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/@taufik-nurrohman/color-picker@2.0.3/color-picker.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/@taufik-nurrohman/color-picker@2.0.3/color-picker.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
     --size: 100px;
@@ -35,6 +35,7 @@ date: 2020-05-14 06:00 -0500
     display: grid;
     transform: rotate(45deg);
   }
+
   .heart.active {
     animation: latir 1.2s linear infinite;
   }
@@ -53,18 +54,27 @@ date: 2020-05-14 06:00 -0500
 
   .heart.active #mensaje {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: 1fr 3fr;
     width: calc(var(--size) * .5 * var(--square-root));
-    /* height: calc(var(--size) * var(--square-root)); */
+    height: calc(var(--size) * var(--square-root));
     grid-row: 1 / 3;
     grid-column: 1 / 3;
     transform: rotate(-45deg);
     justify-self: center;
     align-self: center;
+  }
+
+  #frase {
+    display: grid;
+    align-items: center;
     justify-items: center;
+  }
+
+  #frase p {
     font-family: 'Dancing Script', cursive;
     font-size: 24px;
     color: white;
+    margin: 0;
   }
 
   .heart.active div:not(:last-child) {
@@ -135,6 +145,7 @@ date: 2020-05-14 06:00 -0500
     justify-items: center;
     align-items: center;
   }
+
   #inputs p {
     grid-column: 1 / 7;
     text-align: center;
@@ -202,9 +213,11 @@ date: 2020-05-14 06:00 -0500
       <div id="mensaje">
         <!-- Ayuda para acomodar mensaje, asi las palabras quedan dentro -->
         <p></p>
-        <p>Erick</p>
-        <p>y</p>
-        <p>Yuleisi</p>
+        <div id="frase">
+          <p>Erick</p>
+          <p>y</p>
+          <p>Yuleisi</p>
+        </div>
       </div>
     </div>
   </div>
@@ -269,7 +282,7 @@ date: 2020-05-14 06:00 -0500
         })
       },
       resetColors() {
-        this.colors = COLORS.map(color => { return {...color} })
+        this.colors = COLORS.map(color => { return { ...color } })
         if (this.picker) {
           this.picker.pop()
           this.isActive = ''
